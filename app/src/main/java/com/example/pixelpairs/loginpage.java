@@ -24,33 +24,36 @@ public class loginpage extends AppCompatActivity {
         loginContinueButton = findViewById(R.id.logincontinuebutton);
         loginBackButton = findViewById(R.id.loginbackbutton);
 
-        // Retrieve from SharedPreferences
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        String savedUsername = prefs.getString("username", null);
-        String savedPassword = prefs.getString("password", null);
 
         loginContinueButton.setOnClickListener(v -> {
             String enteredUsername = loginUsername.getText().toString().trim();
             String enteredPassword = loginPassword.getText().toString().trim();
 
-            if (enteredUsername.equals(savedUsername) && enteredPassword.equals(savedPassword)) {
-                // Save the username and mark the user as not a guest
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("username", enteredUsername); // Save the username
-                editor.putBoolean("isGuest", false); // Set guest to false upon successful login
-                editor.apply();
+            // ✅ Check if the username exists in SharedPreferences
+            if (prefs.contains(enteredUsername)) {
+                String storedPassword = prefs.getString(enteredUsername, "");
 
-                // Proceed to the difficulty page
-                Intent nextIntent = new Intent(loginpage.this, menupage.class);
-                startActivity(nextIntent);
-                finish();
+                if (enteredPassword.equals(storedPassword)) {
+                    // ✅ Successful login
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("isGuest", false); // Optional: track login type
+                    editor.putString("currentUser", enteredUsername); // Save current user
+                    editor.apply();
+
+                    Intent nextIntent = new Intent(loginpage.this, menupage.class);
+                    startActivity(nextIntent);
+                    finish();
+                } else {
+                    Toast.makeText(loginpage.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(loginpage.this, "Invalid login credentials", Toast.LENGTH_SHORT).show();
+                Toast.makeText(loginpage.this, "Username not found", Toast.LENGTH_SHORT).show();
             }
         });
 
         loginBackButton.setOnClickListener(v -> {
-            Intent backIntent = new Intent(loginpage.this, startuppage.class); // Replace with your real startup activity
+            Intent backIntent = new Intent(loginpage.this, startuppage.class);
             startActivity(backIntent);
             finish();
         });

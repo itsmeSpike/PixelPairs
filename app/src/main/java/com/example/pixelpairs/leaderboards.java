@@ -21,7 +21,7 @@ public class leaderboards extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leaderboards); // or your actual layout filename
+        setContentView(R.layout.activity_leaderboards);
 
         lbUser = findViewById(R.id.lbuser);
         lbScore = findViewById(R.id.lbscore);

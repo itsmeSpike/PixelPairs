@@ -26,7 +26,7 @@ public class signuppage extends AppCompatActivity {
         signupBakcButton = findViewById(R.id.signupbackbutton);
 
         signupBakcButton.setOnClickListener(v -> {
-            Intent backIntent = new Intent(signuppage.this, startuppage.class); // Replace with your real startup activity
+            Intent backIntent = new Intent(signuppage.this, startuppage.class);
             startActivity(backIntent);
             finish();
         });
@@ -38,17 +38,25 @@ public class signuppage extends AppCompatActivity {
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(signuppage.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
             } else {
-                // Save to SharedPreferences
                 SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("username", username);
-                editor.putString("password", password);
-                editor.apply();
 
-                // Go to login page
-                Intent intent = new Intent(signuppage.this, loginpage.class);
-                startActivity(intent);
-                finish();
+                // Check if username already exists
+                if (prefs.contains(username)) {
+                    Toast.makeText(signuppage.this, "Username already taken. Please choose another.", Toast.LENGTH_SHORT).show();
+                } else {
+                    SharedPreferences.Editor editor = prefs.edit();
+
+                    // Save username as key, password as value
+                    editor.putString(username, password);
+                    editor.apply();
+
+                    Toast.makeText(signuppage.this, "Signup successful!", Toast.LENGTH_SHORT).show();
+
+                    // Proceed to login
+                    Intent intent = new Intent(signuppage.this, loginpage.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

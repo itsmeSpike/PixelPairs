@@ -69,8 +69,12 @@ public class hardlevel extends AppCompatActivity {
         accuracyText.setText("Accuracy: 0%");
 
         homebutton.setOnClickListener(view -> {
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+            }
             Intent intent = new Intent(hardlevel.this, startuppage.class);
             startActivity(intent);
+            finish(); // Finish the current activity so it won’t linger
         });
 
         // ✅ Get selected timer from intent

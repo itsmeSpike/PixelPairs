@@ -68,8 +68,12 @@ public class mediumlevel extends AppCompatActivity {
         accuracyText.setText("Accuracy: 0%");
 
         homebutton.setOnClickListener(view -> {
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+            }
             Intent intent = new Intent(mediumlevel.this, startuppage.class);
             startActivity(intent);
+            finish(); // Finish the current activity so it won’t linger
         });
 
         String selectedTimer = getIntent().getStringExtra("selectedTimer");
