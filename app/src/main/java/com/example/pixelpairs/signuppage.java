@@ -13,6 +13,7 @@ public class signuppage extends AppCompatActivity {
 
     private EditText signUpUsername, signUpPassword;
     private Button signUpContinueButton;
+    private Button signupBakcButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,13 @@ public class signuppage extends AppCompatActivity {
         signUpUsername = findViewById(R.id.signupUsername);
         signUpPassword = findViewById(R.id.signupPassword);
         signUpContinueButton = findViewById(R.id.signupcontinubutton);
+        signupBakcButton = findViewById(R.id.signupbackbutton);
+
+        signupBakcButton.setOnClickListener(v -> {
+            Intent backIntent = new Intent(signuppage.this, startuppage.class); // Replace with your real startup activity
+            startActivity(backIntent);
+            finish();
+        });
 
         signUpContinueButton.setOnClickListener(v -> {
             String username = signUpUsername.getText().toString().trim();
